@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <style>
+       body {
+           display: flex;
+           justify-content: center;
+           align-items: center;
+           height: 100vh;
+           background-image: url('https://i.imgur.com/ZfnemXC.png');
+           background-size: cover;
+           background-position: center;
+           background-repeat: no-repeat;
+           margin: 0;
+           padding: 0;
+           overflow: hidden;
+           transition: background-color 2s;
+       }
+       .circle {
+           width: 10vw;
+           height: 10vw;
+           border-radius: 100%;
+           animation: pulse 5s infinite;
+           transition: box-shadow 4s, background-color 4s;
+           background-image: url('https://i.imgur.com/yJcUSUj.png');
+           background-size: cover;
+           background-position: center;
+           background-repeat: no-repeat;
+           box-shadow: 0 0 5px #000000d3, 0 0 10px #000000d3, 0 0 15px #000000d3, 0 0 20px #000000d3;
+           z-index: 7;
+       }
+       .circle-extra {
+           width: 7.5vw;
+           height: 7.5vw;
+           border-radius: 100%;
+           position: absolute;
+           opacity: 0;
+           z-index: 4;
+           background-image: url('https://i.imgur.com/Y6iyyic.png');
+           background-size: 100%;
+           background-position: center 50%;
+           background-repeat: no-repeat;
+           transition: opacity 2s, transform 2s, width 2s, height 2s, background-color 2s;
+           box-shadow: 0 0 5px #000000d3, 0 0 10px #000000d3, 0 0 15px #000000d3, 0 0 20px #000000d3;
+       }
+       .circle-extra.top {
+           transform: translateY(15vw);
+       }
+       .circle-extra.bottom {
+           transform: translateY(-15vw);
+       }
+       .circle-extra.top.out {
+           transform: translateY(-.1vw);
+           transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1);
+       }
+       .circle-extra.bottom.out {
+           transform: translateY(.1vw);
+           transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1);
+       }
+       .small-circle {
+           width: 1.5vw;
+           height: 1.5vw;
+           position: absolute;
+           background-color: #040422da;
+           transition: background-color 2s, opacity 2s;
+           border-radius: 100%;
+           box-shadow: 0 0 5px #000000d3, 0 0 10px #000000d3, 0 0 15px #000000d3, 0 0 20px #000000d3;
+       }
+       .small-circle.top {
+           left: 3vw;
+           top: .75vw;
+       }
+       .small-circle.center {
+           left: 3vw;
+           top: 3vw;
+       }
+       .small-circle.bottom {
+           right: 3vw;
+           top: 5.25vw;
+       }
+       @keyframes pulse {
+           0% {
+               transform: scale(1);
+           }
+           50% {
+               transform: scale(1.5);
+           }
+           100% {
+               transform: scale(1);
+           }
+       }
+       #text-box {
+           position: absolute;
+           top: 75vh;
+           left: 50%;
+           transform: translate(-50%, -50%);
+           width: 25%;
+           height: 1em;
+           background-color: #060631b6;
+           color: #c5c5e0e7;
+           opacity: 0;
+           transition: opacity 2s, top 2s;
+           resize: none;
+           padding: 0.5em;
+           font-weight: bold;
+           font-family:'Trebuchet MS';
+           text-align: center;
+           z-index: 2;
+           border-radius: 3px;
+           box-shadow: 0 0 5px #000000d3, 0 0 10px #000000d3, 0 0 15px #000000d3, 0 0 20px #000000d3;
+       }
+       #rectangle {
+           position: absolute;
+           top: 75vh;
+           left: 50%;
+           transform: translate(-50%, -50%);
+           width: 30%;
+           height: 2em;
+           opacity: 0;
+           transition: opacity 2s, top 2s;
+           z-index: 3;
+       }
+       #new-text-box {
+           position: absolute;
+           top: 25vh;
+           left: 50%;
+           transform: translate(-50%, -50%);
+           width: 25%;
+           height: 1em;
+           background-color: #060631b6;
+           color: #c5c5e0e7;
+           opacity: 0;
+           transition: opacity 2s, top 2s;
+           resize: none;
+           padding: 0.5em;
+           font-weight: bold;
+           font-family:'Trebuchet MS';
+           text-align: center;
+           z-index: 1;
+           border-radius: 3px;
+           border: none;
+           box-shadow: 0 0 5px #000000d3, 0 0 10px #000000d3, 0 0 15px #000000d3, 0 0 20px #000000d3;
+       }
+       #new-text-box:focus {
+           outline: none;
+       }
+       #rectangle2 {
+           position: absolute;
+           top: 25vh;
+           left: 50%;
+           transform: translate(-50%, -50%);
+           width: 30%;
+           height: 2em;
+           opacity: 0;
+           transition: opacity 2s, top 2s;
+           z-index: 1;
+       }
+       .new-circle {
+           width: 7.5vw;
+           height: 7.5vw;
+           border-radius: 100%;
+           position: absolute;
+           opacity: 1;
+           z-index: 6;
+           background-image: url('https://i.imgur.com/Y6iyyic.png');
+           background-size: cover;
+           background-position: center;
+           background-repeat: no-repeat;
+           transition: opacity 2s, transform 2s, width 2s, height 2s, background-color 2s;
+           box-shadow: 0 0 5px #000000d3, 0 0 10px #000000d3, 0 0 15px #000000d3, 0 0 20px #000000d3;
+       }
+       .new-circle.top {
+           transform: translateY(15vw);
+       }
+       .new-circle.bottom {
+           transform: translateY(-15vw);
+       }
+       .new-circle.top.out {
+           transform: translateY(-.1vw);
+           transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1);
+       }
+       .new-circle.bottom.out {
+           transform: translateY(.1vw);
+           transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1);
+       }
+       .guessed-letter {
+           position: absolute;
+           transform: translate(-50%, -50%);
+           font-size: 2em;
+           font-family:'Trebuchet MS';
+           opacity: 1;
+           color: #d5f3ffaf;
+           background-color: #d4d4ff56;
+           text-shadow: 0 0 1px #d5f3ff, 0 0 2px #d5f3ff, 0 0 3px #d5f3ff, 0 0 4px #d5f3ff, 0 0 5px #18343f41, 0 0 6px #18343f7e, 0 0 7px #18343fbb;
+           border-radius: 50%;
+           border-color: #d4d4ffe0;
+           padding: 10px;
+           width: 30px;
+           height: 30px;
+           line-height: 30px;
+           text-align: center;
+           box-shadow: 0 0 5px #d5f3ff, 0 0 10px #d5f3ff, 0 0 15px #d5f3ff, 0 0 20px #d5f3ff;
+           transition: opacity .5s;
+       }
+       @keyframes flash {
+           0% { box-shadow: 0 0 5px #d5f3ff, 0 0 10px #d5f3ff, 0 0 15px #d5f3ff, 0 0 20px #d5f3ff; }
+           25% { box-shadow: 0 0 1px #d5f3ff, 0 0 2px #d5f3ff, 0 0 3px #d5f3ff, 0 0 4px #d5f3ff; }
+           50% { box-shadow: 0 0 5px #d5f3ff, 0 0 10px #d5f3ff, 0 0 15px #d5f3ff, 0 0 20px #d5f3ff; }
+           75% { box-shadow: 0 0 2.5px #d5f3ff, 0 0 5px #d5f3ff, 0 0 7.5px #d5f3ff, 0 0 10px #d5f3ff; }
+           100% { box-shadow: 0 0 5px #d5f3ff, 0 0 10px #d5f3ff, 0 0 15px #d5f3ff, 0 0 20px #d5f3ff; }
+       }
+
+
+       div#score {
+           position: absolute;
+           top: 9vh;
+           left: 50%;
+           transform: translate(-50%, -50%);
+           font-size: 2.5vw;
+           font-family:'Trebuchet MS';
+           color: #d4d4ffe0;
+           text-shadow: 0 0 1px #d4d4ffe0, 0 0 2px #d4d4ffe0, 0 0 3px #d4d4ffe0;
+           border-radius: 50%;
+           padding: 1vw;
+           display: flex;
+           justify-content: center;
+           align-items: center;
+           box-shadow: 0 0 5px #d4d4ffe0, 0 0 10px #d4d4ffe0, 0 0 15px #d4d4ffe0, 0 0 20px #d4d4ffe0;
+           width: 2.5vw;
+           height: 2.5vw;
+           background-size: 200%;
+           background-position: 50%
+       }
+   </style>
+</head>
+<body>
+   <div class="circle" id="circle"></div>
+   <div class="circle-extra top" id="circle-bottom">
+       <div class="small-circle top" id="small-circle-top-top"></div>
+       <div class="small-circle center" id="small-circle-top-center"></div>
+       <div class="small-circle bottom" id="small-circle-top-bottom"></div>
+   </div>
+   <div class="circle-extra bottom" id="circle-top">
+       <div class="small-circle top" id="small-circle-bottom-top"></div>
+       <div class="small-circle bottom" id="small-circle-bottom-bottom"></div>
+   </div>
+   <div id="text-box"></div>
+   <div id="rectangle"></div>
+   <div id="rectangle2"></div>
+   <textarea id="new-text-box" placeholder="NEW GAME" style="color: #888; font-style: italic; font-size: smaller;" readonly></textarea>
+   <p id="word-display"></p>
+   <div class="new-circle top" id="new-circle-bottom"></div>
+   <div class="new-circle bottom" id="new-circle-top"></div>
+   <div id="score">0</div>
+
+
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+
+
+   <script>
+       function positionOnRing(element, radius, angle) {
+           var viewportSize = Math.min(window.innerWidth, window.innerHeight);
+           var x = Math.cos(angle - Math.PI / 2) * radius * viewportSize / 100;
+           var y = Math.sin(angle - Math.PI / 2) * radius * viewportSize / 100;
+           element.style.left = (50 + x / window.innerWidth * 100) + "%";
+           element.style.top = (50 + y / window.innerHeight * 100) + "%";
+       }
+       var circle = document.getElementById('circle');
+       var circleTop = document.getElementById('circle-top');
+       var circleBottom = document.getElementById('circle-bottom');
+       var textBox = document.getElementById('text-box');
+       var rectangle = document.getElementById('rectangle');
+       var newTextBox = document.getElementById('new-text-box');
+       var rectangle2 = document.getElementById('rectangle2');
+       var middleCircleClicks = 0;
+       var isInitial = true;
+       var wordDisplay = document.getElementById('word-display');
+       var newCircleTop = document.getElementById('new-circle-top');
+       var newCircleBottom = document.getElementById('new-circle-bottom');
+       var score = 0;
+
+
+       function handleClick() {
+           if (isInitial) {
+               circleTop.style.opacity = '1';
+               circleBottom.style.opacity = '1';
+               newCircleTop.style.opacity = '0';
+               newCircleBottom.style.opacity = '0';
+               newCircleTop.style.zIndex = '0';
+               newCircleBottom.style.zIndex = '0';
+               circleTop.style.transition = 'opacity 2s, transform 2s, width 2s, height 2s, background-color 2s';
+               circleBottom.style.transition = 'opacity 2s, transform 2s, width 2s, height 2s, background-color 2s';
+               newCircleTop.style.transition = 'opacity 2s, transform 2s, width 2s, height 2s, background-color 2s';
+               newCircleBottom.style.transition = 'opacity 2s, transform 2s, width 2s, height 2s, background-color 2s';
+           } else {
+               circleTop.style.opacity = '0';
+               circleBottom.style.opacity = '0';
+               newCircleTop.style.opacity = '1';
+               newCircleBottom.style.opacity = '1';
+               circleTop.style.transition = 'opacity 2s, transform 2s, width 2s, height 2s, background-color 2s';
+               circleBottom.style.transition = 'opacity 2s, transform 2s, width 2s, height 2s, background-color 2s';
+               newCircleTop.style.transition = 'opacity 2s, transform 2s, width 2s, height 2s, background-color 2s';
+               newCircleBottom.style.transition = 'opacity 2s, transform 2s, width 2s, height 2s, background-color 2s';
+           }
+           isInitial = !isInitial;
+       }
+
+
+       let gameMode = 0;
+
+
+       circle.addEventListener('click', function() {
+           if (!isInitial) {
+               circleBottom.classList.remove('out');
+               circleTop.classList.remove('out');
+               newCircleBottom.classList.remove('out');
+               newCircleTop.classList.remove('out');
+               textBox.style.opacity = '0';
+               textBox.style.top = '75vh';
+               rectangle.style.opacity = '0';
+               rectangle.style.top = '75vh';
+               rectangle2.style.opacity = '0';
+               rectangle2.style.top = '25vh';
+               rectangle2.style.zIndex = '1';
+           } else {
+               handleClick();
+           }
+               middleCircleClicks++;
+           if (middleCircleClicks === 2) {
+               handleClick();
+               middleCircleClicks = 0;
+           }
+           newTextBox.style.opacity = '0';
+           newTextBox.style.top = '25vh';
+           newTextBox.setAttribute('readonly', '');
+           wordDisplay.style.opacity = '0';
+           var letterElements = document.getElementsByClassName('guessed-letter');
+               for (var i = 0; i < letterElements.length; i++) {
+                   letterElements[i].style.opacity = '1';
+                   setTimeout(function(letterElement) {
+                       letterElement.style.opacity = '0';
+                   }, 0, letterElements[i]);
+           }
+       });
+
+
+       circleBottom.addEventListener('click', function() {
+           if (!isInitial) {
+               circleBottom.classList.add('out');
+               circleTop.classList.add('out');
+               newCircleBottom.classList.add('out');
+               newCircleTop.classList.add('out');
+               textBox.style.opacity = '1';
+               textBox.style.top = '25vh';
+               textBox.textContent = '3 SYLLABLES';
+               circleBottom.style.zIndex = '5';
+               circleTop.style.zIndex = '4';
+               rectangle.style.opacity = '1';
+               rectangle.style.top = '25vh';
+               rectangle2.style.opacity = '1';
+               rectangle2.style.top = '75vh';
+               rectangle2.style.zIndex = '0';
+               newTextBox.style.opacity = '1';
+               newTextBox.style.top = '75vh';
+               newTextBox.removeAttribute('readonly');
+               middleCircleClicks = 0;
+               initialText = textBox.textContent;
+               currentWordList = bottomWords;
+               gameMode = 3;
+               score = 3;
+               document.getElementById('score').textContent = score;
+           }
+       });
+
+
+       circleTop.addEventListener('click', function() {
+           if (!isInitial) {
+               circleBottom.classList.add('out');
+               circleTop.classList.add('out');
+               newCircleBottom.classList.add('out');
+               newCircleTop.classList.add('out');
+               textBox.style.opacity = '1';
+               textBox.style.top = '25vh';
+               textBox.textContent = '2 SYLLABLES';
+               circleTop.style.zIndex = '5';
+               circleBottom.style.zIndex = '4';
+               rectangle.style.opacity = '1';
+               rectangle.style.top = '25vh';
+               rectangle2.style.opacity = '1';
+               rectangle2.style.top = '75vh';
+               rectangle2.style.zIndex = '0';
+               newTextBox.style.opacity = '1';
+               newTextBox.style.top = '75vh';
+               newTextBox.removeAttribute('readonly');
+               middleCircleClicks = 0;
+               initialText = textBox.textContent;
+               currentWordList = topWords;
+               gameMode = 2;
+               score = 2;
+               document.getElementById('score').textContent = score;
+           }
+       });
+
+
+       var topWords = ['happy', 'people', 'demo', 'create', 'monster'];
+       var bottomWords = ['animal', 'lemonade', 'frightening', 'honestly', 'platypus'];
+       var lastFourWords = [];
+       var currentWord = '';
+       var guessedLetters = [];
+       var currentWordList = [];
+
+
+       window.addEventListener('keydown', function(e) {
+           if (e.key === 'Tab') {
+               e.preventDefault();
+           }
+       });
+
+
+       function getRandomWord() {
+           var availableWords = currentWordList.filter(word => !lastFourWords.includes(word));
+           var randomIndex = Math.floor(Math.random() * availableWords.length);
+           var word = availableWords[randomIndex];
+           lastFourWords.push(word);
+           if (lastFourWords.length > 4) {
+               lastFourWords.shift();
+           }
+           return word;
+       }
+
+
+       var initialText = null;
+
+
+       newTextBox.addEventListener('click', function() {
+           if (this.value.length == 0 && !isInitial) {
+               this.removeAttribute('readonly');
+               var letters = document.getElementsByClassName('guessed-letter');
+               while(letters[0]) {
+                   letters[0].parentNode.removeChild(letters[0]);
+               }
+               var letterElements = document.getElementsByClassName('guessed-letter');
+               for (var i = 0; i < letterElements.length; i++) {
+                   letterElements[i].style.opacity = '1';
+                   setTimeout(function(letterElement) {
+                       letterElement.style.opacity = '0';
+                   }, 0, letterElements[i]);
+               }
+
+
+               currentWord = getRandomWord();
+               guessedLetters = [];
+               textBox.textContent = initialText;
+               wordDisplay.style.opacity = '0';
+               newTextBox.placeholder = 'SKIP WORD';
+               score = gameMode;
+               document.getElementById('score').textContent = score;
+           }
+       });
+       newTextBox.addEventListener('input', function() {
+           if (this.value == '') {
+           } else {
+               this.style.color = '#c5c5e0e7';
+           }
+       });
+
+
+       newTextBox.addEventListener('keydown', function(e) {
+           var isLowercaseLetter = (e.key >= 'a' && e.key <= 'z') || (e.key >= 'A' && e.key <= 'Z');
+           var isEnterKey = e.key == 'Enter';
+           var isBackspaceKey = e.key == 'Backspace';
+
+
+           if (isLowercaseLetter) {
+               var letterElements = document.getElementsByClassName('guessed-letter');
+               var typedLetterCount = (this.value.match(new RegExp(e.key, 'g')) || []).length + 1;
+               for (var i = 0, hiddenCount = 0; i < letterElements.length; i++) {
+                   if (letterElements[i].textContent === e.key) {
+                       if (hiddenCount < typedLetterCount) {
+                           letterElements[i].style.opacity = '0';
+                           hiddenCount++;
+                       } else {
+                           letterElements[i].style.opacity = '1';
+                       }
+                   }
+               }
+           }
+
+
+       var pickedWordSpans = Array.from(wordDisplay.textContent).map(function(letter) {
+           return '<span class="letter">' + letter + '</span>';
+       });
+
+
+       wordDisplay.innerHTML = pickedWordSpans.join('');
+
+
+       function shuffle(array) {
+           var currentIndex = array.length, temporaryValue, randomIndex;
+
+
+           while (0 !== currentIndex) {
+
+
+               randomIndex = Math.floor(Math.random() * currentIndex);
+               currentIndex -= 1;
+
+
+               temporaryValue = array[currentIndex];
+               array[currentIndex] = array[randomIndex];
+               array[randomIndex] = temporaryValue;
+           }
+
+
+           return array;
+       }
+
+
+       newTextBox.addEventListener('keydown', function(e) {
+           var isEnterKey = e.key == 'Enter';
+           if (isEnterKey) {
+               e.preventDefault();
+               guessedLetters = [];
+               var guess = this.value;
+               if (guess === currentWord) {
+                   this.setAttribute('readonly', '');
+                   var oldLetters = document.getElementsByClassName('guessed-letter');
+                   while(oldLetters[0]) {
+                       oldLetters[0].parentNode.removeChild(oldLetters[0]);
+                   }
+                   for (var i = 0; i < currentWord.length; i++) {
+                       var letterElement = document.createElement('div');
+                       letterElement.textContent = currentWord[i];
+                       letterElement.id = 'letter-' + currentWord[i] + '-' + i;
+                       letterElement.classList.add('guessed-letter');
+                       letterElement.dataset.index = i;
+                       letterElement.dataset.length = currentWord.length;
+                       var radius = 17;
+                       var angle = 2 * Math.PI * i / currentWord.length;
+                       positionOnRing(letterElement, radius, angle);
+                       document.body.appendChild(letterElement);
+                       guessedLetters.push(currentWord[i]);
+
+
+                       var totalFlashTime = .35;
+                       var delay = totalFlashTime / currentWord.length * i;
+                       var duration = 4 * totalFlashTime;
+                       letterElement.style.animation = 'flash ' + duration + 's ' + delay + 's';
+                   }
+                   this.blur();
+               } else {
+                   var letterElements = document.getElementsByClassName('guessed-letter');
+                   var lettersLeft = Array.from(letterElements).some(el => el.style.opacity === '1');
+                   if (lettersLeft && score > 0) {
+                       score--;
+                       document.getElementById('score').textContent = score;
+                   }
+                   var scrambledWord = currentWord.split('');
+                   scrambledWord.sort();
+                   for (var i = 0; i < scrambledWord.length; i++) {
+                       if (guess.includes(scrambledWord[i]) && !document.getElementById('letter-' + scrambledWord[i] + '-' + i)) {
+                           var letterElement = document.createElement('div');
+                           letterElement.textContent = scrambledWord[i];
+                           letterElement.id = 'letter-' + scrambledWord[i] + '-' + i;
+                           letterElement.classList.add('guessed-letter');
+                           letterElement.dataset.index = i;
+                           letterElement.dataset.length = scrambledWord.length;
+                           var radius = 17;
+                           var angle = 2 * Math.PI * i / scrambledWord.length;
+                           positionOnRing(letterElement, radius, angle);
+                           document.body.appendChild(letterElement);
+                           guessedLetters.push(scrambledWord[i]);
+                       }
+                   }
+               }
+               var letterElements = document.getElementsByClassName('guessed-letter');
+               for (var i = 0; i < letterElements.length; i++) {
+                   letterElements[i].style.opacity = '0';
+                   setTimeout(function(letterElement) {
+                       letterElement.style.opacity = '1';
+                   }, 0, letterElements[i]);
+               }
+               this.value = '';
+           }
+       });
+
+
+       var style = document.createElement('style');
+       style.innerHTML = `
+       .letter {
+           opacity: 0;
+       }
+
+
+       .fade-in {
+           animation: fade-in 1s forwards;
+       }
+
+
+       @keyframes fade-in {
+           to {
+               opacity: 1;
+           }
+       }`;
+
+
+       document.head.appendChild(style);
+
+
+           if (!isLowercaseLetter && !isEnterKey && !isBackspaceKey) {
+               e.preventDefault();
+           } else if (isEnterKey) {
+               e.preventDefault();
+           }
+       });
+
+
+       newTextBox.addEventListener('input', function() {
+           this.value = this.value.toLowerCase();
+           wordDisplay.textContent = currentWord.split('').map(letter => guessedLetters.includes(letter) ? letter : '').join('');
+
+
+           var letterElements = document.getElementsByClassName('guessed-letter');
+           for (var i = 0; i < letterElements.length; i++) {
+               var letterCountInTextbox = (this.value.match(new RegExp(letterElements[i].textContent, 'g')) || []).length;
+               var letterCountOnRing = Array.from(letterElements).filter(el => el.textContent === letterElements[i].textContent && el.style.opacity === '0').length;
+
+
+               if (letterCountInTextbox > letterCountOnRing) {
+                   var visibleLetter = Array.from(letterElements).find(el => el.textContent === letterElements[i].textContent && el.style.opacity === '1');
+                   if (visibleLetter) {
+                       visibleLetter.style.opacity = '0';
+                   }
+               } else if (letterCountInTextbox < letterCountOnRing) {
+                   var hiddenLetter = Array.from(letterElements).find(el => el.textContent === letterElements[i].textContent && el.style.opacity === '0');
+                   if (hiddenLetter) {
+                       hiddenLetter.style.opacity = '1';
+                   }
+               }
+           }
+           if (this.value.toLowerCase() === currentWord) {
+               newTextBox.placeholder = 'NEW GAME';
+           } else {
+               newTextBox.placeholder = 'SKIP WORD';
+           }
+       });
+
+
+       window.addEventListener('resize', function() {
+           var letters = document.getElementsByClassName('guessed-letter');
+           for (var i = 0; i < letters.length; i++) {
+               var letter = letters[i];
+               var angle = 2 * Math.PI * letter.dataset.index / letter.dataset.length;
+               positionOnRing(letter, 17, angle);
+           }
+       });
+
+
+   </script>
+</body>
+</html>
+
+
+
+
